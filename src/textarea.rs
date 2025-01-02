@@ -2007,6 +2007,32 @@ impl<'a> TextArea<'a> {
         &self.lines
     }
 
+    /// Replaces the entire content of the textarea with the provided lines.
+    /// Note that if the input has a length of 0, the textarea still contains one empty line,
+    /// because any text file must end with a newline.
+    /// ```
+    /// use tui_textarea::TextArea;
+    ///
+    /// let mut textarea = TextArea::default();
+    /// assert_eq!(textarea.lines(), [""]);
+    ///
+    /// textarea.set_lines(vec!["a", "b"]);
+    /// assert_eq!(textarea.lines(), ["a", "b"]);
+    ///
+    /// textarea.insert_char('c');
+    /// assert_eq!(textarea.lines(), ["a", "b", "c"]);
+    ///
+    /// textarea.set_lines(vec![]);
+    /// assert_eq!(textarea.lines(), [""]);
+    /// ```
+    pub fn set_lines(&mut self, lines: Vec<String>) {
+        if lines.len() == 0 {
+            self.lines = vec!["".to_string()];
+        } else {
+            self.lines = lines;
+        }
+    }
+
     /// Convert [`TextArea`] instance into line texts.
     /// ```
     /// use tui_textarea::TextArea;
